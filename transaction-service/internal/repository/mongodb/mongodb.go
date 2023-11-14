@@ -23,11 +23,6 @@ func New(ctx context.Context) (MongoDBImpl ,error){
 	if err != nil {
 		return MongoDBImpl{}, err
 	}
-	defer func() {
-		if err = client.Disconnect(ctx); err != nil {
-			panic(err)
-		}
-	}()
 
 	var result bson.M
 	if err := client.Database("admin").RunCommand(ctx, bson.D{{"ping", 1}}).Decode(&result); err != nil {

@@ -7,7 +7,7 @@ import (
 )
 
 type Persistence interface {
-	SaveTransaction(ctx context.Context, transaction *canonical.Transaction) error
+	SaveTransaction(ctx context.Context, transaction *canonical.Transaction) (string,error)
 	FindTransactionById(ctx context.Context, id string) (canonical.Transaction, error)
 }
 

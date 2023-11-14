@@ -15,7 +15,7 @@ func (r Error) Error() string {
 }
 
 type TransactionRequest struct {
-	Amount      float64 `json:"amount,omitempty"`
+	Amount      string `json:"amount,omitempty"`
 	Date        string  `json:"date,omitempty"`
 	Description string  `json:"description,omitempty"`
 }

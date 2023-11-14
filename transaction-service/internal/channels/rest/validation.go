@@ -2,6 +2,7 @@ package rest
 
 import (
 	"github.com/walbety/transaction-app/transaction-service/internal/config"
+	"math/big"
 	"net/http"
 	"time"
 )
@@ -11,6 +12,8 @@ var (
 	ErrZeroAmount  = Error{Code: "2002", Message: "Amount cannot be zero.", HttpCode: http.StatusBadRequest}
 	ErrDateWrongFormat  = Error{Code: "2003", Message: "Field date should be in DD/MM/YYYY format.", HttpCode: http.StatusBadRequest}
 	ErrRequiredDate  = Error{Code: "2004", Message: "Date field is required.", HttpCode: http.StatusBadRequest}
+	ErrAmountWrongFormat  = Error{Code: "2005", Message: "Amount must be a string.", HttpCode: http.StatusBadRequest}
+
 )
 
 func validateSaveTransactionRequest(request TransactionRequest) error {
@@ -19,8 +22,12 @@ func validateSaveTransactionRequest(request TransactionRequest) error {
 		return ErrDescriptionMaxLen
 	}
 	
-	if request.Amount == 0{
+	if request.Amount == "" {
 		return ErrZeroAmount
+	}
+	br := big.NewRat(1,1) // todo: look for better way...
+	if result, _  := br.SetString(request.Amount); result == nil{
+		return ErrAmountWrongFormat
 	}
 
 	if request.Date == "" {

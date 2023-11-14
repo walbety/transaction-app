@@ -11,6 +11,7 @@ import (
 
 type Transaction interface {
 	GetLatestExchangeRateFromCurrencyAndDate(ctx context.Context, currency string, date time.Time) (canonical.ExchangeRate, error)
+	SavePurchase(ctx context.Context, transaction canonical.Transaction) (string,error)
 }
 
 type Service struct {

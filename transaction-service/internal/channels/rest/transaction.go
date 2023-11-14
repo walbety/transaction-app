@@ -14,30 +14,15 @@ const (
 )
 
 func getPurchase(c *fiber.Ctx) error {
-	//
-	//currency := c.Query(ParamCurrency)
-	//dateParam := c.Query(ParamDate)
-	//
-	//if currency == ""{
-	//	return c.Status(http.StatusBadRequest).JSON(canonical.ErrCurrencyIsRequired)
-	//}
+
 
 	log.WithContext(c.UserContext()).Info("CHEGUEI AQUIIIII")
 
-	//date,err := time.Parse("02-01-2006", dateParam)
-	//if err != nil {
-	//	return c.Status(http.StatusUnprocessableEntity).JSON(canonical.ErrDateWrongFormat)
-	//}
 
-	//exchange, err := svc.GetLatestExchangeRateFromCurrencyAndDate(c.UserContext(),currency, date)
-	//if err != nil {
-	//	return c.Status(http.StatusInternalServerError).JSON(err)
-	//}
 	return c.Status(http.StatusOK).JSON("")
 }
 
 func savePurchase(c *fiber.Ctx) error {
-
 
 	transaction := new(TransactionRequest)
 
@@ -52,16 +37,10 @@ func savePurchase(c *fiber.Ctx) error {
 		return c.Status(http.StatusBadRequest).JSON(err)
 	}
 
-	log.WithContext(c.UserContext()).Info("CHEGUEI AQUIIIII")
+	id, err := svc.SavePurchase(c.UserContext(), mapRequestToTransaction(*transaction))
+	if err != nil { //todo create map of errors before return 500
+		return c.Status(http.StatusInternalServerError).JSON(err)
+	}
 
-	//date,err := time.Parse("02-01-2006", dateParam)
-	//if err != nil {
-	//	return c.Status(http.StatusUnprocessableEntity).JSON(canonical.ErrDateWrongFormat)
-	//}
-
-	//exchange, err := svc.GetLatestExchangeRateFromCurrencyAndDate(c.UserContext(),currency, date)
-	//if err != nil {
-	//	return c.Status(http.StatusInternalServerError).JSON(err)
-	//}
-	return c.Status(http.StatusOK).JSON("")
+	return c.Status(http.StatusOK).JSON("id:" + id)
 }

@@ -14,19 +14,19 @@ const (
 
 )
 
-func (d MongoDBImpl) SaveTransaction(ctx context.Context, transaction *canonical.Transaction) error {
+func (d MongoDBImpl) SaveTransaction(ctx context.Context, transaction *canonical.Transaction) (string,error) {
 
 	coll := d.client.Database(database).Collection(collection)
-	_, err := coll.InsertOne(ctx, transaction)
+	result, err := coll.InsertOne(ctx, transaction)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"transaction.Date":transaction.Date,
 			"transaction.Description":transaction.Description,
 		}).WithError(err).Error("Error at insertion - repository layer")
-		return err
+		return "",err
 	}
 
-	return nil
+	return result.InsertedID.(primitive.ObjectID).String(), nil
 }
 
 func (d MongoDBImpl) FindTransactionById(ctx context.Context, id string) (canonical.Transaction, error) {
