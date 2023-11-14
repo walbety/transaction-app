@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	log "github.com/sirupsen/logrus"
+	"github.com/walbety/transaction-app/exchange-service/internal/channels/grpc"
 	"github.com/walbety/transaction-app/exchange-service/internal/channels/rest"
 	"github.com/walbety/transaction-app/exchange-service/internal/config"
 	"github.com/walbety/transaction-app/exchange-service/internal/service"
@@ -29,6 +30,7 @@ func main() {
 	signal.Notify(stop, syscall.SIGABRT, syscall.SIGTERM, syscall.SIGINT)
 
 	svc := service.New()
+	grpc := grpc.Listen(ctx, svc)
 
 	log.Infof("%s starting at port: %s", config.Env.ServiceName, config.Env.RestPort)
 	go func() {
@@ -37,8 +39,11 @@ func main() {
 		}
 	}()
 
+
+
 	<-stop
 	rest.Stop(ctx)
+	grpc.Stop()
 
 	fmt.Print("aaaa\n\n")
 }

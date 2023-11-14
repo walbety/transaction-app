@@ -7,7 +7,6 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/walbety/transaction-app/exchange-service/internal/config"
 	"github.com/walbety/transaction-app/exchange-service/internal/service"
-	"net/http"
 )
 
 var (
@@ -22,12 +21,9 @@ func Start(service service.Service) error {
 
 	public := app.Group("/")
 	public.Get("/", welcome)
-	// todo add health-check endpoint
-	private := app.Group("/v1")
-	private.Get(USER_BASE_PATH, listUser)
-	private.Get(PRODUCT_BASE_PATH, listProduct)
 
-	app.Add(http.MethodGet, "/", welcome)
+	private := app.Group("/v1")
+	private.Get(ExchangeBasePath, getExchange)
 
 	return app.Listen(fmt.Sprintf(":%s", config.Env.RestPort))
 }

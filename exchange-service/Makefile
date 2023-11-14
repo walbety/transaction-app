@@ -1,7 +1,7 @@
 PROTO_SRC_PATH := ./tools/protos
 
 run:
-	go run $$(find cmd/ -name main.go) --config-path=./configs/config.json
+	go run $$(find cmd/ -name main.go) --config-path=configs/config.json
 
 test:
 	go test -tags='test' ./...

@@ -1,12 +1,10 @@
 package canonical
 
-type User struct {
-	Name string
-	Code int
+import "time"
+
+type ExchangeRate struct {
+	Currency     string
+	ExchangeRate string
+	RecordDate   time.Time // note: using date.Date to encapsulate any date format adaptability
 }
 
-type Product struct {
-	MarketName string
-	Code int
-	Price float32
-}

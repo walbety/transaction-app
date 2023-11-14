@@ -10,7 +10,8 @@ import (
 
 const (
 	CONFIG_FILE_TYPE    = "json"
-	DEFAULT_CONFIG_PATH = "config.json"
+	CONFIG_FILE_NAME    = "config.json"
+	DEFAULT_CONFIG_PATH = "configs/config.json"
 	LOG_JSON_FORMAT     = "json"
 	LOG_CONSOLE_FORMAT  = "console"
 	LOG_COMPOSE_FORMAT  = "compose"
@@ -39,20 +40,24 @@ type Envs struct {
 			GrpcPort string
 		}
 	}
+
+	Integration struct {
+		Exchange struct {
+			Provider string
+		}
+	}
 }
 
 var Env Envs
 
 func Initialize(args []string) error {
-	configPath := flag.String("config-path","","define the config.json file path to use")
+	configPath := flag.String("config-path", "", "define the config.json file path to use")
 	flag.Parse()
 
 	Env = Envs{}
 
-
-
 	log.Info("configPath: ", *configPath)
-	if configPath != nil && *configPath != ""  {
+	if configPath != nil && *configPath != "" {
 		viper.SetConfigFile(*configPath)
 	} else {
 		viper.SetConfigFile(DEFAULT_CONFIG_PATH)
