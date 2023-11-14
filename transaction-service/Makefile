@@ -6,6 +6,6 @@ run:
 test:
 	go test -tags='test' ./...
 
-protobuf-product:
-	protoc --go_out=. $(PROTO_SRC_PATH)/product.proto
-	protoc --go-grpc_out=. $(PROTO_SRC_PATH)/product.proto
+protobuf-exchange:
+	protoc --go_out=. $(PROTO_SRC_PATH)/exchange.proto
+	protoc --go-grpc_out=. $(PROTO_SRC_PATH)/exchange.proto

@@ -6,14 +6,24 @@ import (
 )
 
 type Transaction struct {
+	Id      string   `bson:"_id,omitempty"` // todo check this
 	Amount      big.Rat   `bson:"amount,omitempty"`
 	Date        time.Time `bson:"date,omitempty"`
 	Description string    `bson:"description,omitempty"`
 }
 
-
 type ExchangeRate struct {
 	Currency     string
 	ExchangeRate string
 	RecordDate   time.Time
+}
+
+type ConvertedTransaction struct {
+	Id              string
+	OriginalAmount  big.Rat
+	ConvertedAmount big.Rat
+	Currency        string
+	TransactionDate time.Time
+	Description     string
+	ExchangeRate    string
 }

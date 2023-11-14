@@ -23,6 +23,9 @@
   "validations":{
     "rest":{
       "dateFormat" : "02-01-2006"
+    },
+    "exchange": {
+      "dateMonthsMax" : 6
     }
   }
 }

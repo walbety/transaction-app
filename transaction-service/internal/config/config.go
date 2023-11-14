@@ -52,6 +52,9 @@ type Envs struct {
 		Rest struct {
 			DateFormat string
 		}
+		Exchange struct {
+			DateMonthsMax int64
+		}
 	}
 }
 

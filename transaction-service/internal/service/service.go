@@ -10,7 +10,7 @@ import (
 )
 
 type Transaction interface {
-	GetLatestExchangeRateFromCurrencyAndDate(ctx context.Context, currency string, date time.Time) (canonical.ExchangeRate, error)
+	GetLatestExchangeRateFromCurrencyAndDate(ctx context.Context, id, currency string, date time.Time) (canonical.ConvertedTransaction, error)
 	SavePurchase(ctx context.Context, transaction canonical.Transaction) (string,error)
 }
 

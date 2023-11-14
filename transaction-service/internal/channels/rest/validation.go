@@ -13,6 +13,8 @@ var (
 	ErrDateWrongFormat  = Error{Code: "2003", Message: "Field date should be in DD/MM/YYYY format.", HttpCode: http.StatusBadRequest}
 	ErrRequiredDate  = Error{Code: "2004", Message: "Date field is required.", HttpCode: http.StatusBadRequest}
 	ErrAmountWrongFormat  = Error{Code: "2005", Message: "Amount must be a string.", HttpCode: http.StatusBadRequest}
+	ErrRequiredId  = Error{Code: "2006", Message: "Id is required.", HttpCode: http.StatusBadRequest}
+	ErrRequiredCurrency  = Error{Code: "2006", Message: "Currency is required.", HttpCode: http.StatusBadRequest}
 
 )
 
@@ -36,6 +38,25 @@ func validateSaveTransactionRequest(request TransactionRequest) error {
 
 	if _, err := time.Parse(config.Env.Validations.Rest.DateFormat, request.Date); err != nil {
 		return ErrDateWrongFormat
+	}
+
+	return nil
+}
+
+func validateGetPurchaseRequest(id, date,currency string) error {
+	if id == "" {
+		return ErrRequiredId
+	}
+
+	if date == "" {
+		return ErrRequiredDate
+	}
+	if _, err := time.Parse(config.Env.Validations.Rest.DateFormat, date); err != nil {
+		return ErrDateWrongFormat
+	}
+
+	if currency == "" {
+		return ErrRequiredCurrency
 	}
 
 	return nil
