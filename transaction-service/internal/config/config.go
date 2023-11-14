@@ -47,6 +47,12 @@ type Envs struct {
 			Database  string
 		}
 	}
+	
+	Validations struct {
+		Rest struct {
+			DateFormat string
+		}
+	}
 }
 
 var Env Envs

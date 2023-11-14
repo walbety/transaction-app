@@ -20,7 +20,9 @@ func Start(service service.Transaction) error {
 	app = fiber.New()
 
 	private := app.Group("/v1")
+
 	private.Get(TransactionBasePath, getPurchase)
+	private.Post(TransactionBasePath, savePurchase)
 
 	return app.Listen(fmt.Sprintf(":%s", config.Env.RestPort))
 }

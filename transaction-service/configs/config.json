@@ -19,5 +19,10 @@
       "timeoutMS" : "5000",
       "database" : "transaction"
     }
+  },
+  "validations":{
+    "rest":{
+      "dateFormat" : "02-01-2006"
+    }
   }
 }
