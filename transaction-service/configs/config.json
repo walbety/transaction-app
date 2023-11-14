@@ -1,18 +1,23 @@
 {
   "appEnv": "development",
-  "serviceName": "exchange-service",
-  "restPort": "31001",
-  "AUTHENTICATE_PORT": "8081",
+  "serviceName": "transaction-service",
+  "restPort": "31002",
   "logFormat": "console",
   "logLevel": "DEBUG",
   "services": {
-    "user": {
-      "restPort": "31002",
-      "grpcPort": "32002"
-    },
-    "product": {
-      "restPort": "31003",
-      "grpcPort": "32003"
+    "exchange": {
+      "grpcPort": "32001"
+    }
+  },
+  "repository": {
+    "mongodb": {
+      "credentials": {
+        "user": "admin",
+        "password": "password"
+      },
+      "port" : "27017",
+      "timeoutMS" : "5000",
+      "database" : "transaction"
     }
   }
 }

@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+
 	log "github.com/sirupsen/logrus"
+
 	"github.com/walbety/transaction-app/transaction-service/internal/channels/rest"
 	"github.com/walbety/transaction-app/transaction-service/internal/config"
 	"github.com/walbety/transaction-app/transaction-service/internal/service"
@@ -18,7 +20,7 @@ func main() {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	err := config.Initialize(os.Args)
+	err := config.Initialize()
 	if err != nil {
 		log.Fatal("error at initializing configs")
 		os.Exit(2)
@@ -27,7 +29,7 @@ func main() {
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGABRT, syscall.SIGTERM, syscall.SIGINT)
 
-	svc := service.New()
+	svc := service.New(ctx)
 
 	log.Infof("%s starting at port: %s", config.Env.ServiceName, config.Env.RestPort)
 	go func() {

@@ -1,11 +1,31 @@
 package service
 
-type Service struct{}
+import (
+	"context"
+	log "github.com/sirupsen/logrus"
+	"github.com/walbety/transaction-app/transaction-service/internal/canonical"
+	"github.com/walbety/transaction-app/transaction-service/internal/integration"
+	"github.com/walbety/transaction-app/transaction-service/internal/repository"
+	"time"
+)
 
-func New() Service {
-	return Service{}
+type Transaction interface {
+	GetLatestExchangeRateFromCurrencyAndDate(ctx context.Context, currency string, date time.Time) (canonical.ExchangeRate, error)
 }
 
-func (svc *Service) welcome() {
-	return
+type Service struct {
+	exchange integration.ExchangeService
+	persistence repository.Persistence
+}
+
+func New(ctx context.Context) Transaction {
+	persist, err := repository.NewClient(ctx)
+	if err != nil {
+		log.Panic("ERRROORRRORORO")
+	}
+	
+	return Service{
+		exchange: integration.NewExchangeService(),
+		persistence: persist,
+	}
 }

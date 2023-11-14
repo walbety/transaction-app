@@ -10,21 +10,19 @@ import (
 )
 
 var (
-	svc service.Service
+	svc service.Transaction
 	app *fiber.App
 )
 
-func Start(service service.Service) error {
+func Start(service service.Transaction) error {
 	svc = service
 
 	app = fiber.New()
 
 	private := app.Group("/v1")
-	private.Post(TRANSACTION_BASE_PATH, save)
+	private.Get(TransactionBasePath, getPurchase)
 
-
-
-	return app.Listen(fmt.Sprintf(":%s",config.Env.RestPort))
+	return app.Listen(fmt.Sprintf(":%s", config.Env.RestPort))
 }
 
 func Stop(ctx context.Context) {
@@ -33,6 +31,3 @@ func Stop(ctx context.Context) {
 	}
 }
 
-func welcome(c *fiber.Ctx) error {
-	return c.Status(200).JSON("WELCOME!!")
-}

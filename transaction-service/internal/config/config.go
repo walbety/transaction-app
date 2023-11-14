@@ -1,6 +1,7 @@
 package config
 
 import (
+	"flag"
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -9,7 +10,8 @@ import (
 
 const (
 	CONFIG_FILE_TYPE    = "json"
-	DEFAULT_CONFIG_PATH = "config.json"
+	CONFIG_FILE_NAME    = "config.json"
+	DEFAULT_CONFIG_PATH = "configs/config.json"
 	LOG_JSON_FORMAT     = "json"
 	LOG_CONSOLE_FORMAT  = "console"
 	LOG_COMPOSE_FORMAT  = "compose"
@@ -23,35 +25,41 @@ type Envs struct {
 	AppEnv           string
 	ServiceName      string
 	RestPort         string
+	GrpcPort         string
 	AuthenticatePort string
 	LogLevel         string
 	LogFormat        string
 
 	Services struct {
-		User struct {
-			RestPort string
+		Exchange struct {
 			GrpcPort string
 		}
-		Product struct {
-			RestPort string
-			GrpcPort string
+	}
+
+	Repository struct {
+		Mongodb struct {
+			Credentials struct {
+				User     string
+				Password string
+			}
+			Port      string
+			TimeoutMS string
+			Database  string
 		}
 	}
 }
 
 var Env Envs
 
-func Initialize(args []string) error {
-	var configPath string
+func Initialize() error {
+	configPath := flag.String("config-path", "", "define the config.json file path to use")
+	flag.Parse()
 
 	Env = Envs{}
 
-	if len(args) > 0 {
-		configPath = args[1]
-	}
-
-	if configPath != "" {
-		viper.SetConfigFile(configPath)
+	log.Info("configPath: ", *configPath)
+	if configPath != nil && *configPath != "" {
+		viper.SetConfigFile(*configPath)
 	} else {
 		viper.SetConfigFile(DEFAULT_CONFIG_PATH)
 	}
@@ -72,8 +80,6 @@ func Initialize(args []string) error {
 	if Env.AppEnv == "development" {
 		log.Println("The App is running in development env")
 	}
-
-	//log.Printf("setting Broker-port: %s \t Authenticate-port: %s", env.BrokerPort, env.AuthenticatePort)
 
 	configureLogger()
 
@@ -122,19 +128,6 @@ func configureLogger() {
 			})
 
 	}
-	//if Env.LogFormat == LOG_JSON_FORMAT {
-	//	log.SetFormatter(&log.JSONFormatter{
-	//		TimestampFormat:        "02-01-2006 15:04:05",
-	//	})
-	//} else {
-	//	log.SetFormatter(
-	//		&myFormatter{log.TextFormatter{
-	//			FullTimestamp:          true,
-	//			TimestampFormat:        "02-01-2006 15:04:05",
-	//			ForceColors:            true,
-	//			DisableLevelTruncation: true,
-	//		}})
-	//}
 
 	// TODO: log - add formatters
 	// TODO: log - add hooks

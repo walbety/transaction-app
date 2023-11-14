@@ -2,16 +2,36 @@ package rest
 
 import (
 	"github.com/gofiber/fiber/v2"
+	log "github.com/sirupsen/logrus"
+	"net/http"
 )
 
 const (
-	TRANSACTION_BASE_PATH = "/transaction"
+	TransactionBasePath = "/transaction"
+
+	ParamCurrency = "currency"
+	ParamDate     ="date"
 )
 
-func save(c *fiber.Ctx) error {
-	users, err := svc.ListUsers(c.UserContext()) // todo create transaction-service
-	if err != nil {
-		return c.Status(500).JSON(err)
-	}
-	return c.Status(200).JSON(users)
+func getPurchase(c *fiber.Ctx) error {
+	//
+	//currency := c.Query(ParamCurrency)
+	//dateParam := c.Query(ParamDate)
+	//
+	//if currency == ""{
+	//	return c.Status(http.StatusBadRequest).JSON(canonical.ErrCurrencyIsRequired)
+	//}
+
+	log.WithContext(c.UserContext()).Info("CHEGUEI AQUIIIII")
+
+	//date,err := time.Parse("02-01-2006", dateParam)
+	//if err != nil {
+	//	return c.Status(http.StatusUnprocessableEntity).JSON(canonical.ErrDateWrongFormat)
+	//}
+
+	//exchange, err := svc.GetLatestExchangeRateFromCurrencyAndDate(c.UserContext(),currency, date)
+	//if err != nil {
+	//	return c.Status(http.StatusInternalServerError).JSON(err)
+	//}
+	return c.Status(http.StatusOK).JSON("")
 }
