@@ -43,17 +43,11 @@ func validateSaveTransactionRequest(request TransactionRequest) error {
 	return nil
 }
 
-func validateGetPurchaseRequest(id, date,currency string) error {
+func validateGetPurchaseRequest(id, currency string) error {
 	if id == "" {
 		return ErrRequiredId
 	}
 
-	if date == "" {
-		return ErrRequiredDate
-	}
-	if _, err := time.Parse(config.Env.Validations.Rest.DateFormat, date); err != nil {
-		return ErrDateWrongFormat
-	}
 
 	if currency == "" {
 		return ErrRequiredCurrency

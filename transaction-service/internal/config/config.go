@@ -33,6 +33,7 @@ type Envs struct {
 	Services struct {
 		Exchange struct {
 			GrpcPort string
+			Address string
 		}
 	}
 

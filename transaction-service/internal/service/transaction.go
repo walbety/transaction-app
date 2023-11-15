@@ -10,7 +10,7 @@ import (
 )
 
 
-func (s Service) GetLatestExchangeRateFromCurrencyAndDate(ctx context.Context, id, currency string, date time.Time) (canonical.ConvertedTransaction, error){
+func (s Service) GetLatestExchangeRateFromCurrencyAndDate(ctx context.Context, id, currency string) (canonical.ConvertedTransaction, error){
 
 	transaction, err := s.persistence.FindTransactionById(ctx,id)
 	if err != nil {
@@ -18,7 +18,7 @@ func (s Service) GetLatestExchangeRateFromCurrencyAndDate(ctx context.Context, i
 		return canonical.ConvertedTransaction{}, err
 	}
 
-	exchangeRate , err := s.exchange.GetLatestRateGivenMaxDate(ctx,currency,date)
+	exchangeRate , err := s.exchange.GetLatestRateGivenMaxDate(ctx,currency,transaction.Date)
 	if err != nil {
 		log.WithError(err).Error("error at GetLatestRateGivenMaxDate")
 		return canonical.ConvertedTransaction{}, err
@@ -49,18 +49,24 @@ func validateDates(transactionDate ,exchangeRateDate time.Time) error {
 }
 
 func calculateConvertedAmount(purchase canonical.Transaction, exchangeRate canonical.ExchangeRate) canonical.ConvertedTransaction {
+
+	originalAmountF := new(big.Float)
+	originalAmountF, _ = originalAmountF.SetString(purchase.Amount)
+
+
+
 	result := canonical.ConvertedTransaction{
 		Id: purchase.Id,
-		OriginalAmount: purchase.Amount,
+		OriginalAmount: *originalAmountF,
 		Description: purchase.Description,
 		ExchangeRate: exchangeRate.ExchangeRate,
 		TransactionDate:  purchase.Date,
 		Currency: exchangeRate.Currency,
 	}
 
-	exchangeRat := big.NewRat(1,1)
-	exchangeRat, _  = exchangeRat.SetString(exchangeRate.ExchangeRate)
-	convertedAmount := exchangeRat.Mul(exchangeRat, &purchase.Amount)
+	exchangeF := new(big.Float)
+	exchangeF, _ = exchangeF.SetString(exchangeRate.ExchangeRate)
+	convertedAmount := exchangeF.Mul(exchangeF, originalAmountF)
 	result.ConvertedAmount = *convertedAmount
 
 	return result

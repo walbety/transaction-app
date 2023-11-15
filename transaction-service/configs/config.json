@@ -6,7 +6,8 @@
   "logLevel": "DEBUG",
   "services": {
     "exchange": {
-      "grpcPort": "32001"
+      "grpcPort": "32001",
+      "address": "localhost:32001"
     }
   },
   "repository": {

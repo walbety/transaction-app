@@ -113,6 +113,7 @@ func (t Treasury) GetLatestRateGivenMaxDate(ctx context.Context, currency string
 	if len(response.Data) == 0 {
 		return canonical.ExchangeRate{}, canonical.ErrInvalidCurrency
 	}
+	log.WithContext(ctx).WithField("treasury response:", response).Info("Treasury returned successfully.")
 
 	return MapToExchangeRate(response), nil
 }

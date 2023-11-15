@@ -41,7 +41,7 @@ func (d MongoDBImpl) FindTransactionById(ctx context.Context, id string) (canoni
 
 	result:= coll.FindOne(ctx, bson.M{"_id": objectId})
 	transaction := canonical.Transaction{}
-	err = result.Decode(transaction)
+	err = result.Decode(&transaction)
 
 	if err != nil {
 		log.WithContext(ctx).

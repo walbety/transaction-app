@@ -2,15 +2,13 @@ package service
 
 import (
 	"context"
-	log "github.com/sirupsen/logrus"
 	"github.com/walbety/transaction-app/transaction-service/internal/canonical"
 	"github.com/walbety/transaction-app/transaction-service/internal/integration"
 	"github.com/walbety/transaction-app/transaction-service/internal/repository"
-	"time"
 )
 
 type Transaction interface {
-	GetLatestExchangeRateFromCurrencyAndDate(ctx context.Context, id, currency string, date time.Time) (canonical.ConvertedTransaction, error)
+	GetLatestExchangeRateFromCurrencyAndDate(ctx context.Context, id, currency string) (canonical.ConvertedTransaction, error)
 	SavePurchase(ctx context.Context, transaction canonical.Transaction) (string,error)
 }
 
@@ -19,14 +17,9 @@ type Service struct {
 	persistence repository.Persistence
 }
 
-func New(ctx context.Context) Transaction {
-	persist, err := repository.NewClient(ctx)
-	if err != nil {
-		log.Panic("ERRROORRRORORO")
-	}
-	
+func New(integ integration.ExchangeService,repo repository.Persistence) Transaction {
 	return Service{
-		exchange: integration.NewExchangeService(),
-		persistence: persist,
+		exchange: integ,
+		persistence: repo,
 	}
 }
