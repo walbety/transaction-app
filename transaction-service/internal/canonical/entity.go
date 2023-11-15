@@ -7,7 +7,7 @@ import (
 
 type Transaction struct {
 	Id          string    `bson:"_id,omitempty"` // todo check this
-	Amount      string   `bson:"amount,omitempty"`
+	Amount      string    `bson:"amount,omitempty"`
 	Date        time.Time `bson:"date,omitempty"`
 	Description string    `bson:"description,omitempty"`
 }

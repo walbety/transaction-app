@@ -17,4 +17,3 @@ func ConnectGrpc(address string, options ...grpc.DialOption) *grpc.ClientConn {
 	}
 	return client
 }
-

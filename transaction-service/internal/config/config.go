@@ -33,7 +33,7 @@ type Envs struct {
 	Services struct {
 		Exchange struct {
 			GrpcPort string
-			Address string
+			Address  string
 		}
 	}
 
@@ -48,7 +48,7 @@ type Envs struct {
 			Database  string
 		}
 	}
-	
+
 	Validations struct {
 		Rest struct {
 			DateFormat string

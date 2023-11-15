@@ -8,8 +8,7 @@ import (
 const (
 	TransactionBasePath = "/transaction"
 
-	ParamId = "id"
-	ParamDate = "date"
+	ParamId       = "id"
 	ParamCurrency = "currency"
 )
 
@@ -22,9 +21,6 @@ func getPurchase(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(err.(Error).HttpCode).JSON(err.(Error).Message)
 	}
-
-	// already validated
- 	//dateFormtd,_ := time.Parse(config.Env.Validations.Rest.DateFormat, date)
 
 	transaction, err := svc.GetLatestExchangeRateFromCurrencyAndDate(c.UserContext(), id, currency)
 	if err != nil { //todo create map of errors before return 500

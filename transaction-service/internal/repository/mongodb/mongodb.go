@@ -8,12 +8,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-
 type MongoDBImpl struct {
 	client mongo.Client
 }
 
-func New(ctx context.Context) (MongoDBImpl ,error){
+func New(ctx context.Context) (MongoDBImpl, error) {
 
 	// todo: move to envs
 	uri := "mongodb://admin:password@localhost:27017/?timeoutMS=5000"

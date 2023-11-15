@@ -11,7 +11,6 @@ type ExchangeService interface {
 	GetLatestRateGivenMaxDate(ctx context.Context, currency string, maxDate time.Time) (canonical.ExchangeRate, error)
 }
 
-func NewExchangeService() ExchangeService{
+func NewExchangeService() ExchangeService {
 	return exchange.New()
 }
-

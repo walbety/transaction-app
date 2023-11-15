@@ -32,4 +32,3 @@ func Stop(ctx context.Context) {
 		log.WithContext(ctx).WithError(err).Fatal("Error shutting down rest server")
 	}
 }
-

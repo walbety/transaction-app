@@ -9,21 +9,20 @@ import (
 )
 
 const (
-	database = "transaction"
+	database   = "transaction"
 	collection = "purchase"
-
 )
 
-func (d MongoDBImpl) SaveTransaction(ctx context.Context, transaction *canonical.Transaction) (string,error) {
+func (d MongoDBImpl) SaveTransaction(ctx context.Context, transaction *canonical.Transaction) (string, error) {
 
 	coll := d.client.Database(database).Collection(collection)
 	result, err := coll.InsertOne(ctx, transaction)
 	if err != nil {
 		log.WithFields(log.Fields{
-			"transaction.Date":transaction.Date,
-			"transaction.Description":transaction.Description,
+			"transaction.Date":        transaction.Date,
+			"transaction.Description": transaction.Description,
 		}).WithError(err).Error("Error at insertion - repository layer")
-		return "",err
+		return "", err
 	}
 
 	return result.InsertedID.(primitive.ObjectID).String(), nil
@@ -34,12 +33,12 @@ func (d MongoDBImpl) FindTransactionById(ctx context.Context, id string) (canoni
 	coll := d.client.Database(database).Collection(collection)
 
 	objectId, err := primitive.ObjectIDFromHex(id)
-	if err != nil{
+	if err != nil {
 		log.Println("Invalid id")
 		return canonical.Transaction{}, err
 	}
 
-	result:= coll.FindOne(ctx, bson.M{"_id": objectId})
+	result := coll.FindOne(ctx, bson.M{"_id": objectId})
 	transaction := canonical.Transaction{}
 	err = result.Decode(&transaction)
 
@@ -52,4 +51,3 @@ func (d MongoDBImpl) FindTransactionById(ctx context.Context, id string) (canoni
 	}
 	return transaction, nil
 }
-

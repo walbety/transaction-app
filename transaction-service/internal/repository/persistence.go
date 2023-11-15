@@ -7,10 +7,10 @@ import (
 )
 
 type Persistence interface {
-	SaveTransaction(ctx context.Context, transaction *canonical.Transaction) (string,error)
+	SaveTransaction(ctx context.Context, transaction *canonical.Transaction) (string, error)
 	FindTransactionById(ctx context.Context, id string) (canonical.Transaction, error)
 }
 
-func NewClient(ctx context.Context) (Persistence, error){
+func NewClient(ctx context.Context) (Persistence, error) {
 	return mongodb.New(ctx)
 }
