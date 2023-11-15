@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "b69b1992-718c-4186-8604-c1a29f3f38b4",
+		"name": "transaction-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30122912",
+		"_collection_link": "https://lunar-rocket-627865.postman.co/workspace/aaa~03324684-460d-4be3-82e0-1c9f26f20603/collection/30122912-b69b1992-718c-4186-8604-c1a29f3f38b4?action=share&source=collection_link&creator=30122912"
+	},
+	"item": [
+		{
+			"name": "exchange-service",
+			"item": [
+				{
+					"name": "exchange by currency and date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:31001/v1/exchange?currency=Real&date=15-05-2023",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "31001",
+							"path": [
+								"v1",
+								"exchange"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "Real"
+								},
+								{
+									"key": "date",
+									"value": "15-05-2023"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "treasury-reporting",
+			"item": [
+				{
+					"name": "Real",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/rates_of_exchange?fields=currency,country_currency_desc,exchange_rate,record_date&page[number]=1&page[size]=1&filter=currency:eq:Real,record_date:lte:2023-08-30&sort=-record_date",
+							"protocol": "https",
+							"host": [
+								"api",
+								"fiscaldata",
+								"treasury",
+								"gov"
+							],
+							"path": [
+								"services",
+								"api",
+								"fiscal_service",
+								"v1",
+								"accounting",
+								"od",
+								"rates_of_exchange"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "currency,country_currency_desc,exchange_rate,record_date"
+								},
+								{
+									"key": "page[number]",
+									"value": "1"
+								},
+								{
+									"key": "page[size]",
+									"value": "1"
+								},
+								{
+									"key": "filter",
+									"value": "currency:eq:Real,record_date:lte:2023-08-30"
+								},
+								{
+									"key": "sort",
+									"value": "-record_date"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transaction-service",
+			"item": [
+				{
+					"name": "find transaction",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:31002/v1/transaction?id=65541cdcc1a6152a531b44da&currency=Real",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "31002",
+							"path": [
+								"v1",
+								"transaction"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "65541cdcc1a6152a531b44da"
+								},
+								{
+									"key": "currency",
+									"value": "Real"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": \"7.00\",\r\n    \"description\": \"test description\",\r\n    \"date\": \"15-05-2023\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:31002/v1/transaction"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
