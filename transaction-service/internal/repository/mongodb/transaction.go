@@ -25,7 +25,7 @@ func (d MongoDBImpl) SaveTransaction(ctx context.Context, transaction *canonical
 		return "", err
 	}
 
-	return result.InsertedID.(primitive.ObjectID).String(), nil
+	return result.InsertedID.(primitive.ObjectID).Hex(), nil
 }
 
 func (d MongoDBImpl) FindTransactionById(ctx context.Context, id string) (canonical.Transaction, error) {

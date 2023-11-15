@@ -2,6 +2,7 @@ package rest
 
 import (
 	"github.com/gofiber/fiber/v2"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 )
 
@@ -33,12 +34,13 @@ func getPurchase(c *fiber.Ctx) error {
 func savePurchase(c *fiber.Ctx) error {
 
 	transaction := new(TransactionRequest)
-
+	log.Info(string(c.Body()))
 	if err := c.BodyParser(transaction); err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
 			"errors": err.Error(),
 		})
 	}
+
 
 	err := validateSaveTransactionRequest(*transaction)
 	if err != nil {
@@ -50,5 +52,5 @@ func savePurchase(c *fiber.Ctx) error {
 		return c.Status(http.StatusInternalServerError).JSON(err)
 	}
 
-	return c.Status(http.StatusOK).JSON("id:" + id)
+	return c.Status(http.StatusCreated).JSON(TransactionResponse{id})
 }

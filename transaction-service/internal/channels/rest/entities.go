@@ -20,6 +20,10 @@ type TransactionRequest struct {
 	Description string `json:"description,omitempty"`
 }
 
+type TransactionResponse struct {
+	Id      string `json:"id,omitempty"`
+}
+
 type ConvertedTransactionResponse struct {
 	Id              string `json:"id"`
 	OriginalAmount  string `json:"originalAmount"`
