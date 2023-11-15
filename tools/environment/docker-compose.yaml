@@ -1,0 +1,86 @@
+version: '3'
+
+services:
+
+  # transaction-service:
+  #   build:
+  #     context: ./../../transaction-service
+  #     dockerfile: ./../../transaction-service/transaction-service.dockerfile
+  #   restart: always
+  #   ports:
+  #     - "${TRANSACTION_SERVICE_HTTP_PORT}:80"
+  #   deploy:
+  #     mode: replicated
+  #     replicas: 1
+
+  # exchange-service:
+  #   build:
+  #     context: ./../../exchange-service
+  #     dockerfile: ./../../exchange-service/exchange-service.dockerfile
+  #   restart: always
+  #   ports:
+  #     - "${EXCHANGE_SERVICE_GRPC_PORT}:80"
+  #   deploy:
+  #     mode: replicated
+  #     replicas: 1
+
+  postgres:
+    image: 'postgres:${POSTGRES_VERSION}'
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./db-data/postgres/:/var/lib/postgresql/data/
+
+  mongo:
+    image: 'mongo:${MONGODB_VERSION}'
+    ports:
+      - "${MONGODB_PORT}:27017"
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGODB_DB}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
+    volumes:
+      - ./db-data/mongo/:/data/db
+
+  mongo_express:
+    image: mongo-express:0.54.0
+    environment:
+      - ME_CONFIG_OPTIONS_EDITORTHEME=default
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=${MONGODB_PORT}
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_AUTH_DATABASE=${MONGODB_DB}
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGODB_ROOT_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGODB_ROOT_PASSWORD}
+    ports:
+      - "${MONGO_EXPRESS}:8081"
+    restart: on-failure
+    depends_on:
+      - mongo
+
+  cache:
+    image: 'redis:${REDIS_VERSION}'
+    restart: always
+    ports:
+      - "${REDIS_PORT}:6379"
+    command: redis-server --save 20 1 --loglevel ${REDIS_LOG_LEVEL} --requirepass ${REDIS_PASS}
+    volumes:
+      - cache:/data
+
+  grpcox:
+    image: 'gusaul/grpcox:latest'
+    restart: always
+    ports:
+      - "${GRPCOX_PORT}:6969"
+    network_mode: host
+
+volumes:
+  cache:
+    driver: local

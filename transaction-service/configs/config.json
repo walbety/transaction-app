@@ -1,0 +1,32 @@
+{
+  "appEnv": "development",
+  "serviceName": "transaction-service",
+  "restPort": "31002",
+  "logFormat": "console",
+  "logLevel": "DEBUG",
+  "services": {
+    "exchange": {
+      "grpcPort": "32001",
+      "address": "localhost:32001"
+    }
+  },
+  "repository": {
+    "mongodb": {
+      "credentials": {
+        "user": "admin",
+        "password": "password"
+      },
+      "port" : "27017",
+      "timeoutMS" : "5000",
+      "database" : "transaction"
+    }
+  },
+  "validations":{
+    "rest":{
+      "dateFormat" : "02-01-2006"
+    },
+    "exchange": {
+      "dateMonthsMax" : 6
+    }
+  }
+}
